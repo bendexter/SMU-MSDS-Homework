@@ -1,0 +1,150 @@
+---
+title: "homework3"
+author: "Ben Tanaka"
+date: "5/20/2019"
+output: html_document
+  keep_md: true
+---
+
+# *Homework Question 1*
+### Question 1:  Git commands
+* mkdir homework3
+* cd /users/ben/documents/r/homework3
+* git clone https://github.com/caesar0301/awesome-public-datasets
+
+
+### Question 2a:
+```{r}
+df <- read.csv(file="/users/ben/documents/r/homework3/awesome-public-datasets/datasets/titanic.csv",header=TRUE,sep=",")
+
+```
+
+### Question 2b:
+```{r}
+library(plyr)
+sex<-count(df,'Sex')
+library(ggplot2)
+sexplot<-ggplot(sex,aes(Sex,freq))+geom_bar(stat="identity")+ggtitle("Total Passengers by Sex")+xlab("Gender")+ylab("Total Counts")
+
+sexplot
+
+```
+
+### Question 2c:
+```{r}
+q2c <- list(age=df$Age, fare=df$Fare, survived=df$Survived)
+q2c_means <- lapply(q2c,mean,na.rm=TRUE)
+as.data.frame(q2c_means)
+
+```
+
+### Question 3a-d:
+``` {r}
+sleep <- read.csv(file="http://talklab.psy.gla.ac.uk/L1_labs/lab_1/homework/sleep_data_01.csv", header=TRUE,sep=",")
+
+sleep_data <- function (tablename)
+{
+
+median_age <- median(tablename$Age,na.rm=TRUE)
+min_dur <- min(tablename$Duration,na.rm=TRUE)
+max_dur <- max(tablename$Duration,na.rm=TRUE)
+mean_RSES <- mean(tablename$RSES,na.rm=TRUE)
+sd_RSES <- sd(tablename$RSES,na.rm=TRUE)
+
+
+list_vars <- list(median_age=median_age,mean_RSES=mean_RSES,sd_RSES=sd_RSES/5,Range_Duration=max_dur-min_dur)
+
+report<-as.data.frame(list_vars)
+
+library(data.table)
+setnames(report,old=c("median_age","mean_RSES","sd_RSES","Range_Duration"),new=c("MedianAge","SelfEsteem","SE_SD","DurationRange"))
+
+round(report,2)
+
+}
+```
+
+# Question 3e:
+```{r}
+sleep_data(sleep)
+```
+
+# Question 4a:
+```{r, eval = FALSE}
+library(fivethirtyeight)
+```
+
+# Question 4b:
+``` {r}
+
+df<-data.frame(college_recent_grads)
+head(df)
+
+```
+
+# Question 4c:
+``` {r}
+Link to the news story [College Recent Grads](http://fivethirtyeight.com/features/the-economic-guide-to-picking-a-college-major/).
+
+```
+
+# Question 4d:
+``` {r}
+dim(df)
+colnames(df)
+
+```
+
+
+# Question 5a:
+``` {r}
+colnames(df)
+ncol(df)
+
+```
+
+# Question 5b:
+``` {r}
+library(dplyr)
+
+major_count <- df %>% group_by(major_category) %>% summarise(n_distinct(major))
+
+setnames(major_count,old=c("n_distinct(major)"),new=c("Total_Counts"))
+
+```
+
+# Question 5c:
+``` {r Major_Category echo=FALSE}
+library(ggplot2)
+
+ggplot(major_count,aes(x=major_category, y=Total_Counts, color=major_category)) + geom_bar (stat="identity") + theme(axis.text.x=element_text(angle=90,hjust=1)) + coord_flip()
+
+par(las=2)
+barplot(major_count$Total_Counts, main="Total Counts by Major Cateogry",names.arg=major_count$major_category, horiz=TRUE,xlab="Major Category", ylab="Total Counts", col = "darkblue")
+
+```
+
+# Question 5d:
+``` {r}
+write.csv(df, file = "mydf.csv",row.names=FALSE)
+```
+
+## R Markdown
+
+This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+
+When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+
+```{r cars}
+summary(cars)
+```
+
+## Including Plots
+
+You can also embed plots, for example:
+
+```{r c}
+plot(pressure)
+```
+
+Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
