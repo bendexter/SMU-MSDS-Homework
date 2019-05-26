@@ -131,3 +131,5 @@ barplot(major_count$Total_Counts, main="Total Counts by Major Cateogry",names.ar
 write.csv(df, file = "mydf.csv",row.names=FALSE)
 ```
 
+# Link to GITHUB
+This is the link to the GITHUB repository:  [Homework3_Repository](https://github.com/bendexter/SMU-MSDS-Homework/tree/Homework3)
