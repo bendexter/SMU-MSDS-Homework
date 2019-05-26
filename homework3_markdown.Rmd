@@ -2,8 +2,9 @@
 title: "homework3"
 author: "Ben Tanaka"
 date: "5/20/2019"
-output: html_document
-  keep_md: true
+output: 
+  html_document:
+    keep_md: true
 ---
 
 # *Homework Question 1*
@@ -39,7 +40,7 @@ as.data.frame(q2c_means)
 ```
 
 ### Question 3a-d:
-``` {r}
+```{r}
 sleep <- read.csv(file="http://talklab.psy.gla.ac.uk/L1_labs/lab_1/homework/sleep_data_01.csv", header=TRUE,sep=",")
 
 sleep_data <- function (tablename)
@@ -70,26 +71,27 @@ sleep_data(sleep)
 ```
 
 # Question 4a:
-```{r, eval = FALSE}
+```{r}
 library(fivethirtyeight)
 ```
 
 # Question 4b:
-``` {r}
-
+```{r}
+library(fivethirtyeight)
 df<-data.frame(college_recent_grads)
 head(df)
 
 ```
 
 # Question 4c:
-``` {r}
-Link to the news story [College Recent Grads](http://fivethirtyeight.com/features/the-economic-guide-to-picking-a-college-major/).
 
-```
+
+This is a link to the recent college grads article [Recent College Grads](http://fivethirtyeight.com/features/the-economic-guide-to-picking-a-college-major/)
+
+
 
 # Question 4d:
-``` {r}
+```{r}
 dim(df)
 colnames(df)
 
@@ -97,14 +99,14 @@ colnames(df)
 
 
 # Question 5a:
-``` {r}
+```{r}
 colnames(df)
 ncol(df)
 
 ```
 
 # Question 5b:
-``` {r}
+```{r}
 library(dplyr)
 
 major_count <- df %>% group_by(major_category) %>% summarise(n_distinct(major))
@@ -114,7 +116,7 @@ setnames(major_count,old=c("n_distinct(major)"),new=c("Total_Counts"))
 ```
 
 # Question 5c:
-``` {r Major_Category echo=FALSE}
+```{r Major_Category, echo=FALSE}
 library(ggplot2)
 
 ggplot(major_count,aes(x=major_category, y=Total_Counts, color=major_category)) + geom_bar (stat="identity") + theme(axis.text.x=element_text(angle=90,hjust=1)) + coord_flip()
@@ -125,7 +127,7 @@ barplot(major_count$Total_Counts, main="Total Counts by Major Cateogry",names.ar
 ```
 
 # Question 5d:
-``` {r}
+```{r}
 write.csv(df, file = "mydf.csv",row.names=FALSE)
 ```
 
