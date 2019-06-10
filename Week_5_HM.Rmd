@@ -1,0 +1,75 @@
+---
+title: "Week 6"
+author: "Ben Tanaka"
+date: "6/7/2019"
+output: 
+  html_document:
+    keep_md: true
+---
+
+```{r setup, echo=FALSE, include=FALSE, warning=FALSE,message =FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(xml2)
+library(rvest)
+library(stringr)
+library(tibble)
+library(data.table)
+library(knitr)
+library(kableExtra)
+library(dplyr)
+library(tidyr)
+library(ggplot2)
+setwd("/users/ben/documents/r/week 5")
+getwd()
+```
+
+# *Question 1:*
+```{r baby_names_2016}
+
+df <- read.csv(file="yob2016.txt", header=FALSE, sep=";")
+setnames(df,old=c("V1","V2","V3"),new=c("First_Name","Gender","Total_Count"))
+str(df)
+summary(df)
+grep("yyy$",df$First_Name, value=TRUE)
+y2016 <- df[!grepl("yyy$",df$First_Name),]
+
+
+```
+
+# *Question 2:*
+```{r baby_names_2015}
+
+df <- read.csv(file="yob2015.txt", header=FALSE, sep=",")
+setnames(df,old=c("V1","V2","V3"),new=c("First_Name","Gender","Total_Count"))
+str(df)
+summary(df)
+grep("yyy$",df$First_Name, value=TRUE)
+y2015 <- df[!grepl("yyy$",df$First_Name),]
+
+tail(y2015,10)
+
+```
+
+### Question 2: last 10 rows Observation
+
+* The last two rows seem alsmot the same.  Zyrus and Zyus.  Could be a misspelling however, these are names so I have not clue if this is a data error or not.  And they all have a count of 5
+
+```{r merge_2015_2016}
+final <- merge(y2016,y2015, by=c("First_Name","Gender"))
+
+setnames(final,old=c("Total_Count.x","Total_Count.y"),new=c("2016_Total_Cnts","2015_Total_Cnts"))
+```
+
+### Question 3:
+
+``` {r Data_Summary}
+final$Total <- (final$`2016_Total_Cnts`+ final$`2015_Total_Cnts`)
+final <- final[order(-final$Total),]
+head(final,10)
+
+girls <- final %>% filter(final$Gender!="M") %>% slice(1:10)
+View(girls)
+girls %>% select(First_Name)
+write.csv(girls,file="girl_names_top_ten.csv")
+
+```
